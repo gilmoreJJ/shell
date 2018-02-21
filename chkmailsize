@@ -1,0 +1,26 @@
+#! /bin/bash
+
+IFS=$'\n'
+DIR="/var/spool/mail/"
+
+function smail()
+{
+ echo "${name} 您的信箱容量目前為 ${size1}" | mail -s ${name}信箱快達上限 ${name}
+ echo "${name} 您的信箱容量目前為 ${size1}" | mail -s ${name}信箱快達上限 gilmore
+}
+
+function testsmail()
+{
+ echo ${name}","${size1}
+}
+
+for msizecheck in $(ls -l $DIR | sed -n '1!p')
+do
+   name=`echo $msizecheck | awk -F" " '{print $3}'`
+   size=`echo $msizecheck | awk -F" " '{print $5}'`
+   if (( ${size} > 1900000000 ));then
+    size1=`ls -alh /var/spool/mail/${name} | awk -F" " '{print $5}'`
+    smail;
+   fi
+done
+
