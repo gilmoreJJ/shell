@@ -1,27 +1,44 @@
 #! /bin/bash
-#test
 
 case $1 in
  -a | -A)
-  sgr=`cat /etc/aliases | grep $6 | wc -l`
-  if [ $# -le 5 ]; then
-   echo 'usr -a Loginname Password Descript sendout Group'
+  if [ $# -eq 6 ]; then
+   sgr=`grep -w $6 /etc/aliases | wc -l`
+   lgname=`grep -w $2 /etc/passwd | wc -l`
+   if [ ${sgr} -le 0 ]; then
+    echo 'Group "'${6}'" Not Exist'
+   elif [ ${lgname} -ge 0 ]; then
+    echo 'User "'${2}'" already Exist'
+   else
+    useradd $2 -g ltsgrp -p $3 -s /sbin/nologin -c $4
+   fi
   else
-   useradd $2 -g ltsgrp -p $3 -s /sbin/nologin -c $4
-   echo ${sgr}
+    clear
+    echo 'Usage Example.............'
+    echo 'usr -a Loginname Password Descript sendout Group'
   fi
 ;;
 
  -d | -D)
-  if [ $# -le 1 ]; then
-   echo 'usr -d Loginname'
+  if [ $# -eq 2 ]; then
+   lgname=`grep -w $2 /etc/passwd | wc -l`
+   if [ ${lgname} -le 0 ]; then
+    echo 'User "'${2}'" Not Exist'
+   else
+    userdel $2
+   fi
   else
-   userdel $2
+   clear
+   echo 'Usage Example.............'
+   echo 'usr -d LoginName'
   fi
 ;;
  *)
+clear
 echo 'usage : usr [option] Login ......'
 echo '   usr -a Loginname Password Descript Sendout Group'
 echo '     add a new user '
+echo '   usr -d Loginname'
+echo '     del a user'
 ;;
 esac
