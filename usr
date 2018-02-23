@@ -1,0 +1,27 @@
+#! /bin/bash
+
+
+case $1 in
+ -a | -A)
+  sgr=`cat /etc/aliases | grep $6 | wc -l`
+  if [ $# -le 5 ]; then
+   echo 'usr -a Loginname Password Descript sendout Group'
+  else
+   useradd $2 -g ltsgrp -p $3 -s /sbin/nologin -c $4
+   echo ${sgr}
+  fi
+;;
+
+ -d | -D)
+  if [ $# -le 1 ]; then
+   echo 'usr -d Loginname'
+  else
+   userdel $2
+  fi
+;;
+ *)
+echo 'usage : usr [option] Login ......'
+echo '   usr -a Loginname Password Descript Sendout Group'
+echo '     add a new user '
+;;
+esac
