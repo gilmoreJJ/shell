@@ -1,16 +1,28 @@
 #! /bin/bash
 
+function addusr2grp()
+{
+ sgrpname=`grep -w ${grpname} /etc/aliases1`
+ cgrpname="${sgrpname}, ${usrname}"
+ sed "s/${sgrpname}/${cgrpname}/" /etc/aliases1 > /etc/aliasestmp
+ cp /etc/aliasestmp /etc/aliases1
+ rm /etc/aliasestmp
+}
+
 case $1 in
  -a | -A)
+  grpname=$6
+  usrname=$2
   if [ $# -eq 6 ]; then
    sgr=`grep -w $6 /etc/aliases | wc -l`
-   lgname=`grep -w $2 /etc/passwd | wc -l`
+   lgname=`grep -w ${usrname} /etc/passwd | wc -l`
    if [ ${sgr} -le 0 ]; then
     echo 'Group "'${6}'" Not Exist'
-   elif [ ${lgname} -ge 0 ]; then
+   elif [ ${lgname} -gt 0 ]; then
     echo 'User "'${2}'" already Exist'
    else
-    useradd $2 -g ltsgrp -p $3 -s /sbin/nologin -c $4
+    useradd $2 -d /home/$2 -g ltsgrp -p $3 -s /sbin/nologin -c $4
+    addusr2grp;
    fi
   else
     clear
