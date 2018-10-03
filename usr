@@ -58,6 +58,9 @@ case $1 in
     clear
     echo 'Usage Example ...........'
     echo 'usr -m account NewUserName'
+  fi
+;;
+
  *)
 clear
 echo 'usage : usr [option] Login ......'
