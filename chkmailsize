@@ -12,6 +12,7 @@ function smail()
 function testsmail()
 {
  echo ${name}","${size1}
+ echo "本地測試"
 }
 
 for msizecheck in $(ls -l $DIR | sed -n '1!p')
