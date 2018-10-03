@@ -45,6 +45,19 @@ case $1 in
    echo 'usr -d LoginName'
   fi
 ;;
+
+ -m | -M)
+  if [ $# -eq 3 ]; then
+    lgname=`grep -w $2 /etc/passwd | wc -l`
+    if [ ${lgname} -le 0 ];then
+      echo 'User "'${2}'" Not Exist'
+    else
+      echo 'change User Name'
+    fi
+  else
+    clear
+    echo 'Usage Example ...........'
+    echo 'usr -m account NewUserName'
  *)
 clear
 echo 'usage : usr [option] Login ......'
@@ -52,5 +65,7 @@ echo '   usr -a Loginname Password Descript Sendout Group'
 echo '     add a new user '
 echo '   usr -d Loginname'
 echo '     del a user'
+echo '   usr -m Loginname UserName'
+echo '     Change user name'
 ;;
 esac
