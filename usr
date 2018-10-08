@@ -26,7 +26,7 @@ case $1 in
     echo 'Group "'${6}'" Not Exist'
    elif [ ${lgname} -gt 0 ]; then
     echo 'User "'${2}'" already Exist'
-  elif [ "x${5} != "xY" -a "x${5} !="xN" ]; then
+  elif [ "x${5}" != "xY" -a "x${5}" !="xN" ]; then
     echo "只能是Y or N"
    else
     useradd $2 -d /home/$2 -g mail -p $3 -s /sbin/nologin -c $4
