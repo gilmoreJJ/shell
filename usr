@@ -2,11 +2,17 @@
 
 function addusr2grp()
 {
- sgrpname=`grep -w ${grpname} /etc/aliases1`
+ sgrpname=`grep -w ${grpname} /etc/aliases`
  cgrpname="${sgrpname}, ${usrname}"
- sed "s/${sgrpname}/${cgrpname}/" /etc/aliases1 > /etc/aliasestmp
- cp /etc/aliasestmp /etc/aliases1
+ sed "s/${sgrpname}/${cgrpname}/" /etc/aliases > /etc/aliasestmp
+ cp /etc/aliasestmp /etc/aliases
  rm /etc/aliasestmp
+}
+
+function rmusrfromgrp()
+{
+
+  #statements
 }
 
 case $1 in
@@ -20,8 +26,10 @@ case $1 in
     echo 'Group "'${6}'" Not Exist'
    elif [ ${lgname} -gt 0 ]; then
     echo 'User "'${2}'" already Exist'
+  elif [ "x${5} != "xY" -a "x${5} !="xN" ]; then
+    echo "只能是Y or N"
    else
-    useradd $2 -d /home/$2 -g ltsgrp -p $3 -s /sbin/nologin -c $4
+    useradd $2 -d /home/$2 -g mail -p $3 -s /sbin/nologin -c $4
     addusr2grp;
    fi
   else
@@ -37,7 +45,7 @@ case $1 in
    if [ ${lgname} -le 0 ]; then
     echo 'User "'${2}'" Not Exist'
    else
-    userdel $2
+    userdel -r $2
    fi
   else
    clear
